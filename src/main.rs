@@ -91,3 +91,10 @@ fn hunt_food(roll: u64) -> u64 {
 fn can_afford(gold: u64, cost: u64) -> bool {
     gold >= cost
 }
+/// Prints the current game status showing the day count, gold balance, and food units.
+fn print_status(gold: u64, food: u64, day: u64) {
+    println!("\n=== STATUS ===");
+    println!("Day:  {}", day);
+    println!("Gold: {}", gold);
+    println!("Food: {}", food);
+}
