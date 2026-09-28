@@ -72,3 +72,18 @@ fn roll_many(seed: u64, count: u64) -> u64 {
     }
     total
 }
+/// Returns the amount of food gained based on a d6 die roll value.
+/// 
+/// - Roll 1:    0 food
+/// - Roll 2-3: 10 food
+/// - Roll 4-5: 20 food
+/// - Roll 6:   40 food
+fn hunt_food(roll: u64) -> u64 {
+    match roll {
+        1 => 0,
+        2 | 3 => 10,
+        4 | 5 => 20,
+        6 => 40,
+        _ => 0,
+    }
+}
