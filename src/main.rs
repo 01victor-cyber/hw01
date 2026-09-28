@@ -98,3 +98,66 @@ fn print_status(gold: u64, food: u64, day: u64) {
     println!("Gold: {}", gold);
     println!("Food: {}", food);
 }
+fn main() {
+    println!("Welcome to Roll Many!");
+    println!("Please set up your game seed.");
+    let seed = read_number(1, MAX_SEED);
+
+    let mut gold = START_GOLD;
+    let mut food = 0;
+    let mut day = 1;
+    let mut roll_count = 0;
+
+    loop {
+        print_menu();
+        let choice = read_number(1, 5);
+
+        match choice {
+            1 => {
+                if !can_afford(gold, FOOD_PRICE) {
+                    println!("You cannot afford any food right now!");
+                } else {
+                    let max_units = gold / FOOD_PRICE;
+                    println!("How many units of food would you like to buy?");
+                    let qty = read_number(1, max_units);
+                    let total_cost = qty * FOOD_PRICE;
+
+                    gold -= total_cost;
+                    food += qty;
+                    day += 1;
+                    println!("Bought {} units of food for {} gold.", qty, total_cost);
+                }
+            }
+            2 => {
+                let current_seed = seed + roll_count;
+                let roll = roll_die(current_seed);
+                roll_count += 1;
+
+                let gained = hunt_food(roll);
+                food += gained;
+                day += 1;
+                println!("You rolled a {}! Gained {} food.", roll, gained);
+            }
+            3 => {
+                let current_seed = seed + roll_count;
+                let total = roll_many(current_seed, 3);
+                roll_count += 3;
+
+                let gold_gained = 2 * total;
+                gold += gold_gained;
+                day += 1;
+                println!("Rolled 3 dice (total {}). Earned {} gold!", total, gold_gained);
+            }
+            4 => {
+                print_status(gold, food, day);
+            }
+            5 => {
+                println!("\nFinal Game State:");
+                print_status(gold, food, day);
+                println!("Thanks for playing!");
+                break;
+            }
+            _ => unreachable!(),
+        }
+    }
+}
